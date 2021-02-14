@@ -19,6 +19,7 @@ test('Returns the Id of the Intern', () => {
     expect(intern.id = '4');
 });
 
+
 test('Returns the Email of the Intern', () => {
     const intern = new Intern('Taylor', '4', 'vanscoytaylor@gmail.com');
     
@@ -26,6 +27,15 @@ test('Returns the Email of the Intern', () => {
         console.log('Your Email is' + ':' + intern.email);
     };
     expect(intern.email = 'vanscoytaylor@gmail.com');
+});
+
+test('Returns the Role of Intern', () => {
+    const intern = new Intern('Taylor', '4', 'vanscoytaylor@gmail.com', 'Intern');
+    
+    if (intern.role === 'Intern'){
+        console.log('Your Role is' + ':' + intern.role);
+    };
+    expect(intern.role === 'Intern');
 });
 
 test('Returns the School of the Intern', () => {

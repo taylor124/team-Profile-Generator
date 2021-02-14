@@ -1,12 +1,15 @@
 const inquirer = require('inquirer');
+const fs = require('fs');
 // Employee is important for the name, id and email.
 const Employee = require('./lib/Employee');
 // Everything else uses super() to import the same name, id and email parameters from Employee.
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
+const Choices = require('inquirer/lib/objects/choices');
+const { callbackify } = require('util');
 
-let manager = () => {
+let askManager = () => {
     return inquirer
         .prompt([
             {
@@ -26,13 +29,18 @@ let manager = () => {
             },
             {
                 type: 'input',
+                name: 'managerRole',
+                message: 'What is the Manager\'s Role?'
+            },
+            {
+                type: 'input',
                 name: 'managerOfficeNumber',
                 message: 'What is the Manager\'s Office Number?'
             }
         ]);
 };
 
-let intern = () => {
+let askIntern = () => {
     return inquirer
         .prompt([
             {
@@ -52,14 +60,19 @@ let intern = () => {
             },
             {
                 type: 'input',
+                name: 'internRole',
+                message: 'What is the Intern\'s Role?'
+            },
+            {
+                type: 'input',
                 name: 'internSchool',
                 message: 'What is the Intern\'s School?'
             }
         ]);
 
-}
+};
 
-let engineer = () => {
+let askEngineer = () => {
     return inquirer
         .prompt([
             {
@@ -79,41 +92,152 @@ let engineer = () => {
             },
             {
                 type: 'input',
+                name: 'engineerRole',
+                message: 'What is the Engineer\'s Role?'
+            },
+            {
+                type: 'input',
                 name: 'engineerGithub',
                 message: 'What is the Engineer\'s Github?'
             }
         ]);
 };
 
-const displayFunctions = async () => {
-    let responses = await manager();
+let manager = [];
+let intern = [];
+let engineer = [];
 
-    console.log(responses.managerName);
-    console.log(responses.managerID);
-    console.log(responses.managerEmail);
-    console.log(responses.managerOfficeNumber);
+const teamCreate = () => {
 
-    displayFunctions2();
+    inquirer
+        .prompt([{
+            type: 'list',
+            name: 'otherMember',
+            message: 'Would you like to add another Team Member?',
+            choices: ['Engineer', 'Intern', 'Finish Building Team']
+        }])
+
+        .then(data => {
+            if (data.otherMember === 'Engineer') {
+                displayEngineer();
+            } else if (data.otherMember === 'Intern') {
+                displayIntern();
+            } else {
+
+                console.log(manager);
+                console.log(intern);
+                console.log(engineer);
+                let html = displayHtml();
+                console.log(html);
+                fs.writeFile('./src/index.html', html, function (err) {
+                    if (err) {
+                        throw err;
+                    };
+                    console.log('Successfully finished creating Team.');
+                })
+            }
+        });
+
 };
 
-const displayFunctions2 = async () => {
-    let responses2 = await intern();
+const displayManager = async () => {
+    let responses = await askManager();
+    manager.push(new Manager(responses.managerName, responses.managerID, responses.managerEmail, responses.managerRole, responses.managerOfficeNumber));
 
-    console.log(responses2.internName);
-    console.log(responses2.internID);
-    console.log(responses2.internEmail);
-    console.log(responses2.internSchool);
-    displayFunctions3();
+    console.log(manager);
+
+    teamCreate();
 };
 
-const displayFunctions3 = async () => {
-    let responses3 = await engineer();
+const displayIntern = async () => {
+    let responses2 = await askIntern();
+    intern.push(new Intern(responses2.internName, responses2.internID, responses2.internEmail, responses2.internRole, responses2.internSchool));
 
-    console.log(responses3.engineerName);
-    console.log(responses3.engineerID);
-    console.log(responses3.engineerEmail);
-    console.log(responses3.engineerGithub);
+    console.log(intern);
+
+    teamCreate();
 };
 
+const displayEngineer = async () => {
+    let responses3 = await askEngineer();
+    engineer.push(new Engineer(responses3.engineerName, responses3.engineerID, responses3.engineerEmail, responses3.engineerRole, responses3.engineerGithub));
 
-displayFunctions()
+    console.log(engineer);
+
+    teamCreate();
+};
+
+let displayHtml = () => {
+    function renderManager() {
+        return `<div class="card border-info mb-3" style="max-width: 18rem;">
+        <div class="card-header">${manager[0].name}</div>
+        <div class="card-body text-info">
+          <h5 class="card-title"></h5>
+          <p class="card-text">
+          Id: ${manager[0].id}
+          Email: ${manager[0].email}
+          Role: ${manager[0].role}
+          Office Number: ${manager[0].officeNumber}
+          </p>
+        </div>
+      </div> `
+    };
+    function renderEngineers() {
+        let engineerHtml = ''
+        engineer.forEach(eng => {
+            engineerHtml += `<div class="card border-info mb-3" style="max-width: 18rem;">
+        <div class="card-header">${eng.name}</div>
+        <div class="card-body text-info">
+          <h5 class="card-title"></h5>
+          <p class="card-text">
+          Id: ${eng.id}
+          Email: ${eng.email}
+          Role: ${eng.role}
+          Github: https://github.com/${eng.github}
+          </p>
+        </div>
+      </div> `  
+        })
+        return engineerHtml;
+    };
+    function renderIntern() {
+        let internHtml = ''
+        intern.forEach(int => {
+            internHtml += `<div class="card border-info mb-3" style="max-width: 18rem;">
+        <div class="card-header">${int.name}</div>
+        <div class="card-body text-info">
+          <h5 class="card-title"></h5>
+          <p class="card-text">
+          Id: ${int.id}
+          Email: ${int.email}
+          Role: ${int.role}
+          School: ${int.school}
+          </p>
+        </div>
+      </div> ` 
+        })
+        return internHtml;
+    };
+    const markup = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <title>Document</title>
+    </head>
+    <body>
+    
+     ${renderManager()}
+     ${renderEngineers()}
+     ${renderIntern()}
+
+    </body>
+    </html>`
+    return markup;
+}
+
+
+displayManager();

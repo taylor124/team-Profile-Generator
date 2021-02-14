@@ -1,13 +1,13 @@
 const { TestScheduler } = require('jest');
-const index = require('../Index');
 const Employee = require('../lib/Employee');
 const Id = require('../lib/Employee');
 const Email = require('../lib/Employee');
+const Role = require('../lib/Employee');
 
 test('Returns the Name of the Employee', () => {
     const employee = new Employee('Taylor');
     if (this.name === 'Taylor') {
-        console.log('Your Name is' + ':' + employee.name);
+        console.log('Your Name is' + ':' + name);
     };
     expect(this.name === 'Taylor');
 });
@@ -28,4 +28,13 @@ test('Returns the Email of the Employee', () => {
         console.log('Your Email is' + ':' + email);
     };
     expect(this.email === 'vanscoytaylor@gmail.com');
+});
+
+test('Returns the Role of Employee', () => {
+    const role = new Role('Taylor', '1', 'vanscoytaylor@gmail.com', 'Employee');
+    
+    if (this.role === 'vanscoytaylor@gmail.com'){
+        console.log('Your Role is' + ':' + role);
+    };
+    expect(this.role === 'Employee');
 });
