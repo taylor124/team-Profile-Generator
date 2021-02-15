@@ -171,32 +171,36 @@ let displayHtml = () => {
     function renderManager() {
         return `<div class="card border-info mb-3" style="max-width: 18rem;">
         <div class="card-header">${manager[0].name}</div>
-        <div class="card-body text-info">
-          <h5 class="card-title"></h5>
           <p class="card-text">
+          <br>
           Id: ${manager[0].id}
-          Email: ${manager[0].email}
+          <br>
+          Email: <a href='${manager[0].email}'>${manager[0].email}<a>
+          <br>
           Role: ${manager[0].role}
+          <br>
           Office Number: ${manager[0].officeNumber}
+          <br>
           </p>
-        </div>
-      </div> `
+        </div>`
     };
     function renderEngineers() {
         let engineerHtml = ''
         engineer.forEach(eng => {
             engineerHtml += `<div class="card border-info mb-3" style="max-width: 18rem;">
         <div class="card-header">${eng.name}</div>
-        <div class="card-body text-info">
-          <h5 class="card-title"></h5>
           <p class="card-text">
+          <br>
           Id: ${eng.id}
-          Email: ${eng.email}
+          <br>
+          Email: <a href='${eng.email}'>${eng.email}<a>
+          <br>
           Role: ${eng.role}
-          Github: https://github.com/${eng.github}
+          <br>
+          Github: <a>https://github.com/${eng.github}<a>
+          <br>
           </p>
-        </div>
-      </div> `  
+        </div>`
         })
         return engineerHtml;
     };
@@ -205,16 +209,18 @@ let displayHtml = () => {
         intern.forEach(int => {
             internHtml += `<div class="card border-info mb-3" style="max-width: 18rem;">
         <div class="card-header">${int.name}</div>
-        <div class="card-body text-info">
-          <h5 class="card-title"></h5>
           <p class="card-text">
+          <br>
           Id: ${int.id}
-          Email: ${int.email}
+            <br>
+          Email: <a href='${int.email}'>${int.email}<a>
+          <br>
           Role: ${int.role}
+          <br>
           School: ${int.school}
+          <br>
           </p>
-        </div>
-      </div> ` 
+        </div>`
         })
         return internHtml;
     };
@@ -225,15 +231,19 @@ let displayHtml = () => {
       <meta charset="UTF-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      
-      <title>Document</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <link rel="stylesheet" href="style.css">
+      <title>Team Profile Creator</title>
     </head>
     <body>
+    <header>Team Profile Creator</header>
     
      ${renderManager()}
      ${renderEngineers()}
      ${renderIntern()}
 
+
+     <h2>❤️ Made with love by Taylor Van Scoy</h2>
     </body>
     </html>`
     return markup;

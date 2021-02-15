@@ -1,0 +1,36 @@
+* {
+    margin: 30px;
+    padding: auto 30px;
+}
+
+header {
+    margin: 30px;
+    padding: 5px;
+    font-size: 45px;
+    font-weight: bold;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+footer {
+    background: purple;
+    color: darkgreen;
+    width: 100%;
+    padding: 40px 35px;
+}
+
+
+
+div {
+    height: auto;
+    width: fit-content;
+}
+
+p {
+    width: fit-content;
+}
+
