@@ -30,7 +30,9 @@ div {
     width: fit-content;
 }
 
-p {
-    width: fit-content;
+.link {
+    width: none;
+    height: none;
+    margin: none;
+    padding: none;
 }
-

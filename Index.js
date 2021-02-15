@@ -237,6 +237,8 @@ let displayHtml = () => {
     </head>
     <body>
     <header>Team Profile Creator</header>
+    Please download file at <a class="link" href="https://github.com/taylor124/team-Profile-Generator">https://github.com/taylor124/team-Profile-Generator<a>
+    and follow README instructions, thank you.
     
      ${renderManager()}
      ${renderEngineers()}
